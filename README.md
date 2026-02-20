@@ -313,3 +313,9 @@ Optimize the assistant for natural Hindi conversation, reliable wake-word activa
 ---
 
 *Built for offline, low-resource Hindi voice interaction on Raspberry Pi.*
+
+---
+
+## License
+
+This project is developed for educational and hackathon purposes.
