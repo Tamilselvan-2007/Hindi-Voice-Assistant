@@ -1,0 +1,27 @@
+import sounddevice as sd
+import queue
+import json
+from vosk import Model, KaldiRecognizer
+
+SAMPLE_RATE = 48000
+model = Model("models/vosk-model-small-hi-0.22")
+rec = KaldiRecognizer(model, SAMPLE_RATE)
+
+q = queue.Queue()
+
+def callback(indata, frames, time, status):
+    q.put(bytes(indata))
+
+with sd.RawInputStream(
+    samplerate=SAMPLE_RATE,
+    blocksize=8000,
+    dtype="int16",
+    channels=1,
+    callback=callback
+):
+    print("🎤 बोलिए...")
+    while True:
+        data = q.get()
+        if rec.AcceptWaveform(data):
+            result = json.loads(rec.Result())
+            print("📝 पहचाना गया:", result.get("text", ""))
